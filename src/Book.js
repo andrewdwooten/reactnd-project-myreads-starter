@@ -18,7 +18,7 @@ function Book( { book } ) {
 			  </div>
 			  <div className="book-title">{book.title}</div>
 			  { book.authors.map((authorName) => (
-					  <div className="book-authors">{authorName}</div>
+					  <div key={authorName} className="book-authors">{authorName}</div>
 		  	))}
 			</div>
 		</li>

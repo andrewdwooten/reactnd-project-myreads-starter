@@ -29,7 +29,8 @@ class BooksApp extends React.Component {
             { shelf: book.shelf,
               authors: book.authors,
               title:  book.title,
-              imageLink: book.imageLinks.thumbnail }
+              imageLink: book.imageLinks.thumbnail,
+              id: book.id }
           ))
   }
 
@@ -71,7 +72,7 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 { shelves.map((shelf) => (
-                  <BookShelf shelfName={shelf} books={this.booksForShelf(shelf)} />
+                  <BookShelf key={shelf} shelfName={shelf} books={this.booksForShelf(shelf)} />
                 ))}
               </div>
             </div>
