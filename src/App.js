@@ -16,12 +16,16 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+    this.getAndSetBookPositions()
+  }
+
+  getAndSetBookPositions() {
     BooksAPI.getAll()
       .then((books) => {
-          this.setState(() => ({
-            books: this.filterBookResponse(books)
-          }))
-        })
+        this.setState(() => ({
+          books: this.filterBookResponse(books)
+      }))
+    })
   }
 
   filterBookResponse(books) {
@@ -36,6 +40,28 @@ class BooksApp extends React.Component {
 
   booksForShelf(shelfName) {
     return this.state.books.filter( book => book.shelf === shelfName)
+  }
+
+  findBookById(id) {
+    return this.state.books.filter(book => book.id === id)[0]
+  }
+
+  updateBookStatePosition(book, shelfName) {
+   let index = this.state.books.indexOf(this.findBookById(book.id))
+   let updatedBook = Object.assign(book, {shelf: shelfName})
+
+    this.setState(prevState => {
+      const books = [...prevState.books];
+      books[index] = updatedBook
+      return { books };
+    });
+  }
+
+  updateBooksShelf = (book, shelfName) => {
+    BooksAPI.update(book, shelfName)
+      .then(() => {
+        this.updateBookStatePosition(book, shelfName)
+      })
   }
 
   render() {
@@ -72,7 +98,7 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 { shelves.map((shelf) => (
-                  <BookShelf key={shelf} shelfName={shelf} books={this.booksForShelf(shelf)} />
+                  <BookShelf key={shelf} shelfName={shelf} books={this.booksForShelf(shelf)} handleBookUpdate={this.updateBooksShelf} />
                 ))}
               </div>
             </div>
