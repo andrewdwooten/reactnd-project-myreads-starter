@@ -15,15 +15,6 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  filterBookResponse(books) {
-   return books.map((book) => (
-            { shelf: book.shelf,
-              authors: book.authors,
-              title:  book.title,
-              imageLink: book.imageLinks.thumbnail }
-          ))
-  }
-
   componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
@@ -33,7 +24,22 @@ class BooksApp extends React.Component {
         })
   }
 
+  filterBookResponse(books) {
+   return books.map((book) => (
+            { shelf: book.shelf,
+              authors: book.authors,
+              title:  book.title,
+              imageLink: book.imageLinks.thumbnail }
+          ))
+  }
+
+  booksForShelf(shelfName) {
+    return this.state.books.filter( book => book.shelf === shelfName)
+  }
+
   render() {
+    const shelves = ["currentlyReading", "wantToRead", "read"]
+
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -64,6 +70,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
+                { shelves.map((shelf) => (
+                  <BookShelf shelfName={shelf} />
+                ))}
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
