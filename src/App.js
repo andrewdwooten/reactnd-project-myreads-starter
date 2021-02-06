@@ -71,7 +71,7 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 { shelves.map((shelf) => (
-                  <BookShelf shelfName={shelf} />
+                  <BookShelf shelfName={shelf} books={this.booksForShelf(shelf)} />
                 ))}
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
