@@ -16,10 +16,6 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getAndSetBookPositions()
-  }
-
-  getAndSetBookPositions() {
     BooksAPI.getAll()
       .then((books) => {
         this.setState(() => ({
