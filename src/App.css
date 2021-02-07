@@ -108,6 +108,12 @@ body, .app {
   font-size: 0;
   border: none;
   outline: none;
+  background-color: lightgrey;
+}
+
+.close-search:hover {
+  background-color: lightcoral;
+  cursor: pointer;
 }
 
 button:active {
