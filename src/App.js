@@ -2,6 +2,7 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import { Link, Route } from 'react-router-dom'
 import BookShelf from './BookShelf'
+import SearchForm from './SearchForm'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -28,7 +29,7 @@ class BooksApp extends React.Component {
   filterBookResponse(books) {
    return books.map((book) => (
             { shelf: book.shelf,
-              authors: book.authors,
+              authors: book.authors || [],
               title:  book.title,
               imageLink: book.imageLinks.thumbnail,
               id: book.id }
@@ -67,30 +68,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <Link
-                className="button close-search"
-                to='/'>
-                Close
-              </Link>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>  
+          <SearchForm filterResults={this.filterBookResponse}/>
         )} />
 
         <Route exact path='/' render={() => (

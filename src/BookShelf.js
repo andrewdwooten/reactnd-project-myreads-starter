@@ -7,8 +7,10 @@ class BookShelf extends Component {
 			return "Currently Reading" 
 		} else if (shelfName === "wantToRead") {
 			return "Want to Read"
-		} else {
+		} else if (shelfName === "read") {
 			return "Read"
+		} else {
+			return "Search Results"
 		}
 	}
 
