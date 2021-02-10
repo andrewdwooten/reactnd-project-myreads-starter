@@ -7,13 +7,6 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
     books: []
   }
 
@@ -37,19 +30,22 @@ class BooksApp extends React.Component {
     return this.state.books.filter( book => book.shelf === shelfName)
   }
 
-  findBookById(id) {
-    return this.state.books.filter(book => book.id === id)[0]
-  }
-
   updateBookStatePosition(book, shelfName) {
-   let index = this.state.books.indexOf(this.findBookById(book.id))
-   let updatedBook = Object.assign(book, {shelf: shelfName})
+    let index = this.state.books.findIndex(e => e.id === book.id)
+    let bookForState = Object.assign(book, {shelf: shelfName})
 
-    this.setState(prevState => {
-      const books = [...prevState.books];
-      books[index] = updatedBook
-      return { books };
-    });
+    if (index >= 0) {
+
+      this.setState(prevState => {
+        const books = [...prevState.books];
+        books[index] = bookForState
+        return { books };
+      });
+    } else {
+      this.setState((prevState) => ({
+        books: [...prevState.books].concat(bookForState)
+      }));
+    }
   }
 
   updateBooksShelf = (book, shelfName) => {
@@ -59,26 +55,13 @@ class BooksApp extends React.Component {
       })
   }
 
-  addNewBookToShelf = (book, shelfName) => {
-    BooksAPI.update(book, shelfName)
-      .then(() => {
-        this.addBookToState(book.id, shelfName)
-      })
-  }
-
-  addBookToState(bookId, shelfName) {
-    this.setState((prevState) => ({
-      books: [...prevState.books].concat({id: bookId, shelf: shelfName})
-    }))
-  }
-
   render() {
     const shelves = ["currentlyReading", "wantToRead", "read"]
 
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.addNewBookToShelf} />
+          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.updateBooksShelf} />
         )} />
 
         <Route exact path='/' render={() => (
