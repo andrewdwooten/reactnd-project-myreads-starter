@@ -35,7 +35,6 @@ class BooksApp extends React.Component {
     let bookForState = Object.assign(book, {shelf: shelfName});
 
     if (index >= 0) {
-
       this.setState(prevState => {
         const books = [...prevState.books];
         books[index] = bookForState
@@ -82,7 +81,6 @@ class BooksApp extends React.Component {
             </Link>
           </div>
         )} />
-
       </div>
     )
   }
