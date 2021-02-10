@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class BookShelfChanger extends Component {
+  static propTypes = {
+    handleUpdate: PropTypes.func.isRequired,
+    currentShelf: PropTypes.string
+  }
 
 	handleChange = (event) => {
     this.props.handleUpdate(event.target.value)

@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import Book from './Book'
+import PropTypes from 'prop-types'
 
 class BookShelf extends Component {
+  static propTypes = {
+    shelfName: PropTypes.string.isRequired,
+    books: PropTypes.array.isRequired,
+    handleBookUpdate: PropTypes.func.isRequired
+  }
+
 	displayableShelfName(shelfName) {
 		if (shelfName === "currentlyReading") {
 			return "Currently Reading";

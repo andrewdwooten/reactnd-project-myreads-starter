@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import BookShelf from './BookShelf'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 
 class SearchForm extends Component {
+  static propTypes = {
+    filterResults: PropTypes.func.isRequired,
+    handleBookUpdate: PropTypes.func.isRequired
+  }
+
   state = {
     results: [],
     query: ''

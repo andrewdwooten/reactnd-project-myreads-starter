@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
 import BookShelfChanger from './BookShelfChanger'
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
+
 
 class Book extends Component {
+  static propTypes = {
+    book: PropTypes.shape({
+    	id: PropTypes.string.isRequired,
+    	shelf: PropTypes.string
+    }).isRequired,
+    handleBookUpdate: PropTypes.func.isRequired
+  }
+
 	state = {
 		bookData: { authors: [],
 								title: '',
