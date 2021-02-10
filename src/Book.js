@@ -47,7 +47,6 @@ class Book extends Component {
 	}
 
 	render() {
-		const { book } = this.props
 		const { bookData } = this.state
 
 		return (
