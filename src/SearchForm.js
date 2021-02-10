@@ -12,26 +12,26 @@ class SearchForm extends Component {
   handleQuery = (query) => {
     this.setState({query: query});
     this.searchForBooks(query);
-  }
+  };
 
   searchForBooks = (query) => {
     BooksAPI.search(query)
       .then((books) => {
         this.handleSearchResults(books)
-      })
-  }
+      });
+  };
 
   handleSearchResults = (books) => {
     if (!books || books.error) {
       this.setState(() => ({
         results: []
-      }))
+      }));
     } else {
       this.setState(() => ({
         results: this.props.filterResults(books)
-      }))
-    } 
-  }
+      }));
+    }
+  };
 
   render() {
     const { query, results } = this.state
@@ -46,7 +46,7 @@ class SearchForm extends Component {
             Close
           </Link>
           <div className="search-books-input-wrapper">
-            <input 
+            <input
               type="text"
               placeholder="Search by title or author"
               onChange={(event) => this.handleQuery(event.target.value)}
@@ -60,7 +60,7 @@ class SearchForm extends Component {
           No books found for search term "{query}"
           </div>)}
         </div>
-      </div> 
+      </div>
     )
   }
 }

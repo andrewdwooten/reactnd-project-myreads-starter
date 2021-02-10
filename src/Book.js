@@ -25,14 +25,14 @@ class Book extends Component {
 			imageLink: 'imageLinks' in book ? book.imageLinks.thumbnail : '',
 			id: book.id,
 			shelf: book.shelf
-		}
+		};
 	}
 
 	componentDidMount() {
 		 BooksAPI.get(this.props.book.id).then((book) => {
 			this.setState(() => ({
 				bookData: this.filterBookData(book)
-			}))
+			}));
 		});
 	}
 

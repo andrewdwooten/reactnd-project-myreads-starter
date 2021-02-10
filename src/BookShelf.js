@@ -4,13 +4,13 @@ import Book from './Book'
 class BookShelf extends Component {
 	displayableShelfName(shelfName) {
 		if (shelfName === "currentlyReading") {
-			return "Currently Reading" 
+			return "Currently Reading";
 		} else if (shelfName === "wantToRead") {
-			return "Want to Read"
+			return "Want to Read";
 		} else if (shelfName === "read") {
-			return "Read"
+			return "Read";
 		} else {
-			return "Search Results"
+			return "Search Results";
 		}
 	}
 

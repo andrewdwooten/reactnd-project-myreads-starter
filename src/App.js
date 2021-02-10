@@ -15,24 +15,24 @@ class BooksApp extends React.Component {
       .then((books) => {
         this.setState(() => ({
           books: this.filterBookResponse(books)
-      }))
-    })
+      }));
+    });
   }
 
   filterBookResponse(books) {
    return books.map((book) => (
             { shelf: book.shelf,
               id: book.id }
-          ))
+          ));
   }
 
   booksForShelf(shelfName) {
-    return this.state.books.filter( book => book.shelf === shelfName)
+    return this.state.books.filter( book => book.shelf === shelfName);
   }
 
   updateBookStatePosition(book, shelfName) {
-    let index = this.state.books.findIndex(e => e.id === book.id)
-    let bookForState = Object.assign(book, {shelf: shelfName})
+    let index = this.state.books.findIndex(e => e.id === book.id);
+    let bookForState = Object.assign(book, {shelf: shelfName});
 
     if (index >= 0) {
 
@@ -52,8 +52,8 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelfName)
       .then(() => {
         this.updateBookStatePosition(book, shelfName)
-      })
-  }
+      });
+  };
 
   render() {
     const shelves = ["currentlyReading", "wantToRead", "read"]
