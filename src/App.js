@@ -29,9 +29,6 @@ class BooksApp extends React.Component {
   filterBookResponse(books) {
    return books.map((book) => (
             { shelf: book.shelf,
-              authors: book.authors || [],
-              title:  book.title,
-              imageLink: book.imageLinks.thumbnail,
               id: book.id }
           ))
   }
@@ -62,13 +59,26 @@ class BooksApp extends React.Component {
       })
   }
 
+  addNewBookToShelf = (book, shelfName) => {
+    BooksAPI.update(book, shelfName)
+      .then(() => {
+        this.addBookToState(book.id, shelfName)
+      })
+  }
+
+  addBookToState(bookId, shelfName) {
+    this.setState((prevState) => ({
+      books: [...prevState.books].concat({id: bookId, shelf: shelfName})
+    }))
+  }
+
   render() {
     const shelves = ["currentlyReading", "wantToRead", "read"]
 
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <SearchForm filterResults={this.filterBookResponse}/>
+          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.addNewBookToShelf} />
         )} />
 
         <Route exact path='/' render={() => (

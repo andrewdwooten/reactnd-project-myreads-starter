@@ -35,6 +35,7 @@ class SearchForm extends Component {
 
   render() {
     const { query, results } = this.state
+    const { handleBookUpdate } = this.props
 
     return (
       <div className="search-books">
@@ -53,7 +54,7 @@ class SearchForm extends Component {
           </div>
         </div>
         <div className="search-books-results">
-        <BookShelf key="Search Results" shelfName="Search Results" books={results} />
+        <BookShelf key="Search Results" shelfName="Search Results" books={results} handleBookUpdate={handleBookUpdate} />
         { results.length === 0 && (
           <div className="no-results">
           No books found for search term "{query}"
