@@ -1,15 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Book from './Book'
 import PropTypes from 'prop-types'
 
-class BookShelf extends Component {
-  static propTypes = {
-    shelfName: PropTypes.string.isRequired,
-    books: PropTypes.array.isRequired,
-    handleBookUpdate: PropTypes.func.isRequired
-  }
+function BookShelf({ shelfName, books, handleBookUpdate }) {
 
-	displayableShelfName(shelfName) {
+	const displayableShelfName = (shelfName) => {
 		if (shelfName === "currentlyReading") {
 			return "Currently Reading";
 		} else if (shelfName === "wantToRead") {
@@ -21,22 +16,24 @@ class BookShelf extends Component {
 		}
 	}
 
-	render() {
-		const {shelfName, books, handleBookUpdate} = this.props;
+	return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{displayableShelfName(shelfName)}</h2>
+      <div className="bookshelf-books">
+        <ol className="books-grid">
+        { books.map((book) => (
+        	<Book book={book} key={book.id} handleBookUpdate={handleBookUpdate} />
+        ))}
+        </ol>
+      </div>
+    </div>
+	)
+}
 
-		return (
-	    <div className="bookshelf">
-	      <h2 className="bookshelf-title">{this.displayableShelfName(shelfName)}</h2>
-	      <div className="bookshelf-books">
-	        <ol className="books-grid">
-	        { books.map((book) => (
-	        	<Book book={book} key={book.id} handleBookUpdate={handleBookUpdate} />
-	        ))}
-	        </ol>
-	      </div>
-	    </div>
-		)
-	}
+BookShelf.propTypes = {
+  shelfName: PropTypes.string.isRequired,
+  books: PropTypes.array.isRequired,
+  handleBookUpdate: PropTypes.func.isRequired
 }
 
 export default BookShelf;
