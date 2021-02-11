@@ -7,7 +7,8 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    searchResults: []
   }
 
   componentDidMount() {
@@ -22,8 +23,25 @@ class BooksApp extends React.Component {
   filterBookResponse(books) {
    return books.map((book) => (
             { shelf: book.shelf,
-              id: book.id }
+              id: book.id,
+              authors: book.authors || [],
+              title: book.title,
+              imageLink: 'imageLinks' in book ? book.imageLinks.thumbnail : '',
+            }
           ));
+  }
+
+  buildBook(book) {
+    return  { shelf: book.shelf,
+              id: book.id,
+              authors: book.authors || [],
+              title: book.title,
+              imageLink: 'imageLinks' in book ? book.imageLinks.thumbnail : '',
+            }
+  }
+
+  fetchBook(bookId) {
+    return BooksAPI.get(bookId);
   }
 
   booksForShelf(shelfName) {
@@ -32,19 +50,23 @@ class BooksApp extends React.Component {
 
   updateBookStatePosition(book, shelfName) {
     let index = this.state.books.findIndex(e => e.id === book.id);
-    let bookForState = Object.assign(book, {shelf: shelfName});
 
-    if (index >= 0) {
-      this.setState(prevState => {
-        const books = [...prevState.books];
-        books[index] = bookForState
-        return { books };
-      });
-    } else {
-      this.setState((prevState) => ({
-        books: [...prevState.books].concat(bookForState)
-      }));
-    }
+    this.fetchBook(book.id)
+      .then((book) => {
+        let bookForState = this.buildBook(book)
+
+        if (index >= 0) {
+          this.setState(prevState => {
+            const books = [...prevState.books];
+            books[index] = this.buildBook(book)
+            return { books };
+          });
+        } else {
+          this.setState((prevState) => ({
+            books: [...prevState.books].concat(bookForState)
+          }));
+        }
+      })
   }
 
   updateBooksShelf = (book, shelfName) => {
@@ -54,18 +76,22 @@ class BooksApp extends React.Component {
       });
   };
 
-
   searchForBooks = (query) => {
-    BooksAPI.search(query)
+    BooksAPI.search(query).then((books) => {
+      this.setState(() => ({
+        searchResults: this.filterBookResponse(books)
+      }));
+    });
   };
 
   render() {
     const shelves = ["currentlyReading", "wantToRead", "read"]
+    const { searchResults } = this.state
 
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.updateBooksShelf} searchForBooks={this.searchForBooks} />
+          <SearchForm searchResults={searchResults} handleBookUpdate={this.updateBooksShelf} searchForBooks={this.searchForBooks} />
         )} />
 
         <Route exact path='/' render={() => (

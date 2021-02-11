@@ -1,69 +1,39 @@
-import React, { Component } from 'react'
+import React from 'react'
 import BookShelfChanger from './BookShelfChanger'
-import * as BooksAPI from './BooksAPI'
 import PropTypes from 'prop-types'
 
 
-class Book extends Component {
-  static propTypes = {
+function Book({ book, handleBookUpdate }) {
+
+	const	moveBookToShelf = (shelfName) => {
+		handleBookUpdate({id: book.id}, shelfName);
+	}
+
+	return (
+ 		<li>
+			<div className="book">
+			  <div className="book-top">
+			    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLink})` }}></div>
+					<BookShelfChanger handleUpdate={moveBookToShelf} currentShelf={book.shelf} />
+			  </div>
+			  <div className="book-title">{book.title}</div>
+			  { book.authors.map((authorName) => (
+					  <div key={authorName} className="book-authors">{authorName}</div>
+		  	))}
+			</div>
+		</li>
+	)
+}
+
+Book.propTypes = {
     book: PropTypes.shape({
     	id: PropTypes.string.isRequired,
-    	shelf: PropTypes.string
+    	shelf: PropTypes.string,
+    	authors: PropTypes.array.isRequired,
+    	title: PropTypes.string.isRequired,
+    	imageLink: PropTypes.string.isRequired
     }).isRequired,
     handleBookUpdate: PropTypes.func.isRequired
-  }
-
-	state = {
-		bookData: { authors: [],
-								title: '',
-								imageLink: '',
-								id: '',
-								shelf: ''}
-	}
-
-	moveBookToShelf = (shelfName) => {
-		this.props.handleBookUpdate({id: this.props.book.id}, shelfName);
-		this.setState(prevState => {
-			prevState.bookData.shelf = shelfName
-		});
-	}
-
-	filterBookData(book) {
-		return {
-			authors: book.authors || [],
-			title: book.title,
-			imageLink: 'imageLinks' in book ? book.imageLinks.thumbnail : '',
-			id: book.id,
-			shelf: book.shelf
-		};
-	}
-
-	componentDidMount() {
-		 BooksAPI.get(this.props.book.id).then((book) => {
-			this.setState(() => ({
-				bookData: this.filterBookData(book)
-			}));
-		});
-	}
-
-	render() {
-		const { bookData } = this.state
-
-		return (
-	 		<li>
-				<div className="book">
-				  <div className="book-top">
-				    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${bookData.imageLink})` }}></div>
-						<BookShelfChanger handleUpdate={this.moveBookToShelf} currentShelf={bookData.shelf} />
-				  </div>
-				  <div className="book-title">{bookData.title}</div>
-				  { bookData.authors.map((authorName) => (
-						  <div key={authorName} className="book-authors">{authorName}</div>
-			  	))}
-				</div>
-			</li>
-		)
-	}
 }
 
 export default Book;
