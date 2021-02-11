@@ -54,13 +54,18 @@ class BooksApp extends React.Component {
       });
   };
 
+
+  searchForBooks = (query) => {
+    BooksAPI.search(query)
+  };
+
   render() {
     const shelves = ["currentlyReading", "wantToRead", "read"]
 
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.updateBooksShelf} />
+          <SearchForm filterResults={this.filterBookResponse} handleBookUpdate={this.updateBooksShelf} searchForBooks={this.searchForBooks} />
         )} />
 
         <Route exact path='/' render={() => (

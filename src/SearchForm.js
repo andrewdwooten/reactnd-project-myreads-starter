@@ -7,7 +7,8 @@ import * as BooksAPI from './BooksAPI'
 class SearchForm extends Component {
   static propTypes = {
     filterResults: PropTypes.func.isRequired,
-    handleBookUpdate: PropTypes.func.isRequired
+    handleBookUpdate: PropTypes.func.isRequired,
+    searchForBooks: PropTypes.func.isRequired
   }
 
   state = {
@@ -17,11 +18,7 @@ class SearchForm extends Component {
 
   handleQuery = (query) => {
     this.setState({query: query});
-    this.searchForBooks(query);
-  };
-
-  searchForBooks = (query) => {
-    BooksAPI.search(query)
+    this.props.searchForBooks(query)
       .then((books) => {
         this.handleSearchResults(books)
       });
