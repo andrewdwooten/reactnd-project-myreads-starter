@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 function Book({ book, handleBookUpdate }) {
 
 	const	moveBookToShelf = (shelfName) => {
-		handleBookUpdate({id: book.id}, shelfName);
+		handleBookUpdate(book, shelfName);
 	}
 
 	return (
