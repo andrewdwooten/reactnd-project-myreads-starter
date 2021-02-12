@@ -30,42 +30,25 @@ class BooksApp extends React.Component {
           ));
   }
 
-  buildBook(book) {
-    return  { shelf: book.shelf,
-              id: book.id,
-              authors: book.authors || [],
-              title: book.title,
-              imageLink: 'imageLinks' in book ? book.imageLinks.thumbnail : '',
-            }
-  }
-
-  fetchBook(bookId) {
-    return BooksAPI.get(bookId);
-  }
-
   booksForShelf(shelfName) {
     return this.state.books.filter( book => book.shelf === shelfName);
   }
 
   updateBookStatePosition(book, shelfName) {
     let index = this.state.books.findIndex(e => e.id === book.id);
+    book.shelf = shelfName
 
-    this.fetchBook(book.id)
-      .then((book) => {
-        let bookForState = this.buildBook(book)
-
-        if (index >= 0) {
-          this.setState(prevState => {
-            const books = [...prevState.books];
-            books[index] = this.buildBook(book)
-            return { books };
-          });
-        } else {
-          this.setState((prevState) => ({
-            books: [...prevState.books].concat(bookForState)
-          }));
-        }
-      })
+    if (index >= 0) {
+      this.setState(prevState => {
+        const books = [...prevState.books];
+        books[index] = book
+        return { books };
+      });
+    } else {
+      this.setState((prevState) => ({
+        books: [...prevState.books].concat(book)
+      }));
+    }
   }
 
   updateBooksShelf = (book, shelfName) => {
@@ -76,7 +59,7 @@ class BooksApp extends React.Component {
   };
 
   searchForBooks = (query) => {
-    return BooksAPI.search(query)
+    return BooksAPI.search(query);
   };
 
   render() {
